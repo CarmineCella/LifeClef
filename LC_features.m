@@ -90,8 +90,15 @@ for iFolder = 1 : length (foldernames)
                     'dcttype', 2, 'wintime', params.mfcc_win, ...
                     'hoptime', params.mfcc_hop);
             case 'scattering'
-                fprintf ('\tcomputing scattering on %s...\n', filename);
-                S = sc_propagate(temp, archs);
+                if params.scat_isrenorm
+                    fprintf( ...
+                        '\tcomputing renormalized scattering on %s...\n', ...
+                        filename);
+                    S = sc_propagate_renorm(temp, archs);
+                else
+                    fprintf ('\tcomputing scattering on %s...\n', filename);
+                    S = sc_propagate(temp, archs);
+                end
                 file_features{iFile} = sc_format(S);
             case 'alogc'
                 fprintf('\tcomputing average-log coefficients on %s...\n', filename);
